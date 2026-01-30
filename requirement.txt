@@ -1,0 +1,8 @@
+# For API-based scraping
+tweepy
+
+# For Browser-based scraping
+playwright
+
+# For data organization
+pandas
