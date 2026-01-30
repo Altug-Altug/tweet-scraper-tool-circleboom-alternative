@@ -1,0 +1,30 @@
+If you want to scrape tweets and find a Circleboom alternative for this, here is your Python code:
+
+
+
+
+import asyncio
+from playwright.async_api import async_playwright
+
+async def scrape_x(username):
+    async with async_playwright() as p:
+        # Launch a browser (set headless=False if you want to see it work)
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        
+        # Navigate to a profile
+        await page.goto(f"https://x.com/{username}")
+        
+        # Wait for tweets to load
+        await page.wait_for_selector('article[data-testid="tweet"]')
+        
+        # Extract tweet text
+        tweets = await page.locator('article[data-testid="tweet"] div[data-testid="tweetText"]').all_text_contents()
+        
+        for i, text in enumerate(tweets[:5], 1):
+            print(f"Tweet {i}: {text}\n")
+
+        await browser.close()
+
+# Run the scraper
+asyncio.run(scrape_x("nasa"))
